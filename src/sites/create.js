@@ -1,5 +1,5 @@
 import { Box, Button, Container, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import '../css/create.css';
 import Header from './headerBar'
 
@@ -40,11 +40,13 @@ function TeamForm(props){
               <TextField required
                 label="Team Name"
                 variant="filled"
+                name="name"
                 value={inputField[0].name}
                 onChange={event => handleChangeInput(inputField[0].key, event)}
               />
               <TextField
                 label="Winner"
+                name="winner"
                 variant="filled"
                 value={inputField[0].winner}
                 onChange={event => handleChangeInput(inputField[0].key, event)}
@@ -105,6 +107,13 @@ function StudentForm(props) {
 
     });
     const [students, setStudents] = useState(op);
+
+    const studentName = useRef()
+    const major= useRef()
+    const stId = useRef()
+    
+    const retrieve = () => 
+    [studentName.current.value, major.current.value, stId.current.value]
     const handleChangeInput = (key, event) => {
         const newInputFields = students.map(i => {
           if(key === i.key) {
@@ -117,7 +126,7 @@ function StudentForm(props) {
       }
     
     const handleAddFields = () => {
-        setStudents([...students, { key:++counter,  firstName: '', lastName: '', stId:1}])
+        setStudents([...students, { key:++counter,  firstName: '', lastName: '', stId:null}])
       }
     
       const handleRemoveFields = key => {
@@ -129,9 +138,10 @@ function StudentForm(props) {
     return (
         <Container>
           { students.map((inputField,i) => (
-            <div key={inputField.key}>
+            <div name={inputField.key}>
               <TextField required
                 label="Student ID"
+                name="stId"
                 variant="outlined"
                 type="number"
                 value={inputField.stId}
@@ -139,12 +149,14 @@ function StudentForm(props) {
               />
               <TextField required
                 label="Name"
+                name="name"
                 variant="outlined"
                 value={inputField.name}
                 onChange={event => handleChangeInput(inputField.key, event)}
               />
                 <TextField required
                 label="Major"
+                name="major"
                 variant="outlined"
                 value={inputField.major}
                 onChange={event => handleChangeInput(inputField.key, event)}
