@@ -7,8 +7,8 @@ function Header(){
     return(
         <div id = "navbar">
              <Link to="/" style={{ textDecoration: 'none', color: 'white' }}><div id = 'navbar-title'>Competitions</div></Link>
-             <Link to="/insert" style={{ textDecoration: 'none', color: 'white' }}><div id = 'navbar-insert'>Create Competition</div></Link>
-             <Link to="/view" style={{ textDecoration: 'none', color: 'white' }}><div id = 'navbar-edit' >Modify Competition</div></Link>
+             <Link to="/create" style={{ textDecoration: 'none', color: 'white' }}><div id = 'navbar-create'>Create Competition</div></Link>
+             <Link to="/modify" style={{ textDecoration: 'none', color: 'white' }}><div id = 'navbar-modify' >Modify Competition</div></Link>
         </div>
     );
 }
