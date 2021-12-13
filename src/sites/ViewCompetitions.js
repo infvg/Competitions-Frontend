@@ -18,6 +18,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ListItem } from "@mui/material";
 
+import StudentRow from "../components/StudentRow"
+
 function allStudents(props){
   let OverOne = false;
     props.teams.map(team => {
@@ -26,32 +28,6 @@ function allStudents(props){
 
   });
     return OverOne;
-}
-function RowStudent(props){
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-  let isWinner = row.isWinner;
-
-  return (
-    
-    <React.Fragment>
-                  <TableBody>
-                    {row.students.map((student) => (
-
-                      <TableRow key={student.name}>
-                        <TableCell component="th" scope="row">
-                          {student.name}
-                        </TableCell>
-                        <TableCell>{student.stId}</TableCell>
-                        <TableCell align="right">{student.major}</TableCell>
-                        {isWinner? <TableCell onClick={e => {
-                          email(row.students,props.comp,student.name)
-                        }}>Winner</TableCell> : (<TableCell align="right"></TableCell> )}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-    </React.Fragment>
-  );
 }
 
 function getemails(students) {
@@ -175,7 +151,7 @@ function Row(props) {
                     </TableRow>
                   </TableHead>
                 {row.teams.map((team) => (
-                <RowStudent key={team.name} row={team} comp={row.name}/>
+                <StudentRow key={team.name} row={team} comp={row.name}/>
                 
               ))}
               </Table>
@@ -222,19 +198,7 @@ RowTeam.propTypes = {
     )
   })
 };
-RowStudent.propTypes = {
-  row: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    isWinner: PropTypes.bool,
-    students: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        stId: PropTypes.string.isRequired,
-        major: PropTypes.string.isRequired
-      })
-    )
-  })
-};
+
 export default function ViewCompetitions() {
   const [top, setTop] = useState([]);
   const getData = () => {

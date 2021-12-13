@@ -1,7 +1,8 @@
-import { Box, Button, Container, TextField } from '@mui/material';
+import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField } from '@mui/material';
 import { useRef, useState } from 'react';
 import '../css/create.css';
 import Header from './headerBar'
+import CompForm from '../components/CompForm'
 
 let counter = 0;
 function TeamForm(props){
@@ -44,13 +45,7 @@ function TeamForm(props){
                 value={inputField[0].name}
                 onChange={event => handleChangeInput(inputField[0].key, event)}
               />
-              <TextField
-                label="Winner"
-                name="winner"
-                variant="filled"
-                value={inputField[0].winner}
-                onChange={event => handleChangeInput(inputField[0].key, event)}
-              />
+              <FormControlLabel control={<Checkbox/>} label="Winner" />
               <Button disabled={teams.length === 1} onClick={() => handleRemoveFields(inputField.key)}>
                 Remove
               </Button>
@@ -67,37 +62,7 @@ function TeamForm(props){
     );
 }
 
-function Comp(props) {
 
-    return(
-
-        <Container>
-        <div>
-        <TextField required
-                label="Competition Name"
-                variant="filled"
-                value={props.name}
-               
-              />
-        <TeamForm data={[[{},<StudentForm data={[{name: "", major: "", stId: ""},]}/>]]}/>
-        </div>
-
-        </Container>
-        
-    );  
-
-}
-function getfromcompetition(props) {
-    if(props.teams == undefined) 
-        return <TeamForm data={[[{},<StudentForm data={[{name: "", major: "", stId: ""},]}/>]]}/>;
-        
-    let comp = {name:props.name,link:props.link,date:props.date}
-    props.teams.array.forEach(team => {
-        
-    })
-
-    return 
-}
 function StudentForm(props) {
     
     let op = [];
@@ -180,7 +145,14 @@ function Create(){
                     <div>
                         <Box component="form"sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }}noValidateautoComplete="off"> 
       <div>
-        <TeamForm data={[[{},<StudentForm data={[{name: "", major: "", stId: ""},]}/>]]}/>
+      <Grid container spacing={5}>
+          <Grid item xs={9}>
+        <CompForm />
+        </Grid>
+          <Grid item xs={3}>
+        <Button> Submit</Button>
+        </Grid>
+        </Grid>
         </div>
         </Box>
                     </div>
