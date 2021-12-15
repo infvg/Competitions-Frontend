@@ -49,7 +49,7 @@ function getFromCompetition(props) {
   props.teams.forEach(team => {
       let students = [];
 
-      props.teams.forEach(student => {
+      team.students.forEach(student => {
           students.push({ name: student.name, major: student.major, stId: student.stId })
       })
       comp.push([{ name: team.name, winner: team.iswinner }, <StudentForm data={students} />])
@@ -101,7 +101,7 @@ function TeamForm(props){
                 value={inputField[0].name}
                 onChange={event => handleChangeInput(inputField[0].key, event)}
               />
-              <FormControlLabel control={<Checkbox/>} value={inputField[0].winner}label="Winner" />
+              <FormControlLabel control={<Checkbox/>} value={inputField[0].iswinner}label="Winner" />
               <Button disabled={teams.length === 1} onClick={() => handleRemoveFields(inputField.key)}>
                 Remove
               </Button>
