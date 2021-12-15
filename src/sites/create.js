@@ -192,38 +192,26 @@ function StudentForm(props) {
   }
 
 function Create(){
-  const [top, setTop] = useState([]);
-  const getData = () => {
-    setTop([{"name":"AIoT Hackathon with stc","link":"https://ultrahack.org/aiot-hackathon-stc","id":"A2QWDQWD","date":"2021-10-11T21:00:00.000+00:00","teams":[{"name":"Team 1","isWinner":"TRUE","students":[{"name":"Bassel Alqahtani","major":"CS","stId":"222243860"},{"name":"Naif Essam","major":"SWE","stId":"222246560"},{"name":"Majed Ahmad","major":"COE","stId":"222219260"},{"name":"Saleh Mohammed","major":"COE","stId":"222267500"}],"winner":true}]},{"name":"CyberuHub","link":"https://twitter.com/CyberhubSa","id":"WDWD1","date":"2021-10-01T21:00:00.000+00:00","teams":[{"name":"","students":[{"name":"Ahmad Mohammed","major":"CS","stId":"222253860"},{"name":"Abdullah Ali","major":"EE","stId":"222256560"},{"name":"Abdulaziz fawwaz","major":"MIS","stId":"222279260"},{"name":"Faris Ahmad","major":"SWE","stId":"222256700"}],"winner":false}]},{"name":"second","link":"https://ultrahack.org/aiot-hackathon-stc","id":"A2QWDQWD","date":"2021-10-11T21:00:00.000+00:00","teams":[{"name":"Team 1","isWinner":"TRUE","students":[{"name":"Bassel Alqahtani","major":"CS","stId":"222243860"}],"winner":true},{"name":"Team 2","isWinner":"FALSE","students":[{"name":"Bassel Alqahtanddi","major":"CS","stId":"222243860"}]}]}]);
-    /*const result = await axios.get("http://localhost:8080/competitions/").then(response => {
-    console.log(response.data);
-    setTop(response.data);
-  }).catch(error => this.setState({error,isLoading: false}));
-  */
-}
-  const handleSubmit = (data,e) => {
-      console.log(data)
 
-      axios.get("http://localhost:8080/do","te").then(response => {
-        console.log(response.data);
-  });
-  }
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log(e.target.elements.name.value)
+  };
+  
     return(
         <div id = 'create'>
                     <Header />
                     <div>
-                        <Box component="form"sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }}noValidateautoComplete="off"> 
+                        <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }}noValidateautoComplete="off" onSubmit={handleSubmit}> 
       <div>
-        <form onSubmit={handleSubmit}>
       <Grid container spacing={5}>
           <Grid item xs={9}>
-        <CompForm data={{"name":"AIoT Hackathon with stc","link":"https://ultrahack.org/aiot-hackathon-stc","id":"A2QWDQWD","date":"2021-10-11T21:00:00.000+00:00","teams":[{"name":"Team 1","isWinner":"TRUE","students":[{"name":"Bassel Alqahtani","major":"CS","stId":"222243860"},{"name":"Naif Essam","major":"SWE","stId":"222246560"},{"name":"Majed Ahmad","major":"COE","stId":"222219260"},{"name":"Saleh Mohammed","major":"COE","stId":"222267500"}],"winner":true}]}}/>
+        <CompForm data={{"name":"AIoT Hackathon with stc","link":"https://ultrahack.org/aiot-hackathon-stc","id":"A2QWDQWD","date":"2021-10-11","teams":[{"name":"Team 1","isWinner":"TRUE","students":[{"name":"Bassel Alqahtani","major":"CS","stId":"222243860"},{"name":"Naif Essam","major":"SWE","stId":"222246560"},{"name":"Majed Ahmad","major":"COE","stId":"222219260"},{"name":"Saleh Mohammed","major":"COE","stId":"222267500"}],"winner":true}]}}/>
         </Grid>
           <Grid item xs={3}>
         <Button type="submit"> Submit</Button>
         </Grid>
         </Grid>
-        </form>
         </div>
         </Box>
                     </div>
