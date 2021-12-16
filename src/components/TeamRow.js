@@ -7,16 +7,19 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { sendEmail } from "../services/EmailsService" 
 import { Box, Collapse, IconButton, Typography } from '@mui/material';
 
-function RowTeam(props) {
+function TeamRow(props) {
     const { row } = props;
     const onWinnerClick = (e) => {
       sendEmail(row.students,props.comp,row.name)
     }
     const [open, setOpen] = React.useState(false);
-    let isWinner = row.isWinner;
+    let winner = row.winner;
+    console.log(row)
     return (
   
       <React.Fragment>
@@ -34,7 +37,7 @@ function RowTeam(props) {
             {row.name}
           </TableCell>
           {
-            isWinner ? (<div><TableCell onClick={onWinnerClick}>Winner</TableCell></div>) : (<></>) // maybe replace  this with icon
+            winner ? (<div><TableCell onClick={onWinnerClick}>Winner</TableCell></div>) : (<></>) // maybe replace  this with icon
           }
         </TableRow>
         <TableRow>
@@ -73,10 +76,10 @@ function RowTeam(props) {
     );
   }
   
-  RowTeam.propTypes = {
+  TeamRow.propTypes = {
     row: PropTypes.shape({
       name: PropTypes.string.isRequired,
-      isWinner: PropTypes.bool,
+      winner: PropTypes.bool,
       students: PropTypes.arrayOf(
         PropTypes.shape({
           name: PropTypes.string.isRequired,
@@ -86,3 +89,5 @@ function RowTeam(props) {
       )
     })
   };
+
+  export default TeamRow;

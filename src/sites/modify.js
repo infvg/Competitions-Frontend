@@ -82,7 +82,8 @@ function Modify() {
        })
        team["students"].push(student)
        comp["teams"].push(team)
-       axios.post("http://localhost:8080/competitions/",comp).then(function (response) {
+
+        axios.post("http://localhost:8080/competitions/",JSON.stringify(comp)).then(function (response) {
         console.log(response);
       })
       .catch(function (error) {
@@ -90,6 +91,8 @@ function Modify() {
       });
   
       window.location.href = "/";
+      
+     
     };
     const menuItems = data.map(item => (
         <ListItem button key={item.name} value={item.name}><ListItemText primary={item.name} onClick={handleChange} /></ListItem>
