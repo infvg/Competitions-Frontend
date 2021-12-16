@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Grid, MenuItem, Select } from "@mui/material";
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import CompForm from "../components/CompForm";
@@ -9,25 +9,29 @@ function Modify() {
 
     const [data, setData] = useState([]);
     const [competition, setCompetition] = useState('');
-    const getData = () => {
-      setData([{"name":"AIoT Hackathon with stc","link":"https://ultrahack.org/aiot-hackathon-stc","id":"A2DQWD","date":"2021-10-11T21:00:00.000+00:00","teams":[{"name":"Team 1","isWinner":"TRUE","students":[{"name":"Bassel Alqahtani","major":"CS","stId":"222243860"},{"name":"Naif Essam","major":"SWE","stId":"222246560"},{"name":"Majed Ahmad","major":"COE","stId":"222219260"},{"name":"Saleh Mohammed","major":"COE","stId":"222267500"}],"winner":true}]},{"name":"CyberuHub","link":"https://twitter.com/CyberhubSa","id":"WDWD1","date":"2021-10-01T21:00:00.000+00:00","teams":[{"name":"","students":[{"name":"Ahmad Mohammed","major":"CS","stId":"222253860"},{"name":"Abdullah Ali","major":"EE","stId":"222256560"},{"name":"Abdulaziz fawwaz","major":"MIS","stId":"222279260"},{"name":"Faris Ahmad","major":"SWE","stId":"222256700"}],"winner":false}]},{"name":"second","link":"https://ultrahack.org/aiot-hackathon-stc","id":"A2QWDQWD","date":"2021-10-11T21:00:00.000+00:00","teams":[{"name":"Team 1","isWinner":"TRUE","students":[{"name":"Bassel Alqahtani","major":"CS","stId":"222243860"}],"winner":true},{"name":"Team 2","isWinner":"FALSE","students":[{"name":"Bassel Alqahtanddi","major":"CS","stId":"222243860"}]}]}]);
+    const getData = () => {  
+        const result = axios.get("http://localhost:8080/competitions/").then(response => {
+        setData(fixDate(response.data));
+      }).catch(error => this.setState({error,isLoading: false}));
       
-      /*const result = await axios.get("http://localhost:8080/competitions/").then(response => {
-      console.log(response.data);
-      setTop(response.data);
-    }).catch(error => this.setState({error,isLoading: false}));
-    */
-  }
-
-  const getCompFromId = (name) => {
-      data.forEach(comp => {
-        if(comp.id === name) 
-                 return comp;
+      }
+    const fixDate = (data) => {
+      data.map((comp1) => {
+        comp1.date = comp1.date.substring(0,10);
       })
-      return '';
-  }
+      return data;
+    }
+  const getCompFromName = (name) => {
+    let returner = {}
+    data.forEach(comp => {
+      if(comp.name === name) {  
+          returner = comp;
+      }
+    })
+    return returner;
+}
   const handleChange = (event) => {
-    setCompetition(getCompFromId(event.target.value));
+    setCompetition(getCompFromName(event.target.value).name);
   };
   React.useEffect(getData,[]);
 
@@ -74,30 +78,32 @@ function Modify() {
   
       window.location.href = "/";
     };
+    const menuItems = data.map(item => (
+        <MenuItem key={item.id} value={item.name}>{item.name}</MenuItem>
+      ));
     return (
         <div id = 'modify'>
                     <Header />
                     <div>
-                        <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }}noValidateautoComplete="off" onSubmit={handleSubmit}> 
+                        <Box sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }}noValidateautoComplete="off" onSubmit={handleSubmit}> 
       <div>
       <Grid container spacing={5}>
       <Grid item xs={3}>
     <FormControl fullWidth>
+    <InputLabel id="select-label">Competition</InputLabel>
       <Select 
-          value={""}
-          label="Competition"
+          labelId="select-label"
+          id="select"
+          value={competition}
+          label="selector"
           onChange={handleChange}
         >
-            {
-            data.forEach(comp => {
-          <MenuItem value={comp.id}>{comp.name}</MenuItem>
-            })
-            }
+            {menuItems}
         </Select>
         </FormControl>
         </Grid>
           <Grid item xs={7}>
-        {(competition!=='') ? (<CompForm data={competition} />): (<p>Select a competition</p>)}
+        {(competition!=='') ? (<CompForm data={getCompFromName(competition)}/>): (<p>Select a competition</p>)}
         </Grid>
           <Grid item xs={2}>
           {(competition!=='') ? (<div>

@@ -201,13 +201,17 @@ RowTeam.propTypes = {
 
 export default function ViewCompetitions() {
   const [top, setTop] = useState([]);
-  const getData = () => {
-    setTop([{"name":"AIoT Hackathon with stc","link":"https://ultrahack.org/aiot-hackathon-stc","id":"A2QWDQWD","date":"2021-10-11T21:00:00.000+00:00","teams":[{"name":"Team 1","isWinner":"TRUE","students":[{"name":"Bassel Alqahtani","major":"CS","stId":"222243860"},{"name":"Naif Essam","major":"SWE","stId":"222246560"},{"name":"Majed Ahmad","major":"COE","stId":"222219260"},{"name":"Saleh Mohammed","major":"COE","stId":"222267500"}],"winner":true}]},{"name":"CyberuHub","link":"https://twitter.com/CyberhubSa","id":"WDWD1","date":"2021-10-01T21:00:00.000+00:00","teams":[{"name":"","students":[{"name":"Ahmad Mohammed","major":"CS","stId":"222253860"},{"name":"Abdullah Ali","major":"EE","stId":"222256560"},{"name":"Abdulaziz fawwaz","major":"MIS","stId":"222279260"},{"name":"Faris Ahmad","major":"SWE","stId":"222256700"}],"winner":false}]},{"name":"second","link":"https://ultrahack.org/aiot-hackathon-stc","id":"A2QWDQWD","date":"2021-10-11T21:00:00.000+00:00","teams":[{"name":"Team 1","isWinner":"TRUE","students":[{"name":"Bassel Alqahtani","major":"CS","stId":"222243860"}],"winner":true},{"name":"Team 2","isWinner":"FALSE","students":[{"name":"Bassel Alqahtanddi","major":"CS","stId":"222243860"}]}]}]);
-    /*const result = await axios.get("http://localhost:8080/competitions/").then(response => {
-    console.log(response.data);
-    setTop(response.data);
+  const getData = () => {  
+    const result = axios.get("http://localhost:8080/competitions/").then(response => {
+    setTop(fixDate(response.data));
   }).catch(error => this.setState({error,isLoading: false}));
-  */
+  
+}
+const fixDate = (data) => {
+  data.map((comp1) => {
+    comp1.date = comp1.date.substring(0,10);
+  })
+  return data;
 }
 React.useEffect(getData,[]);
   return (
