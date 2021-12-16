@@ -16,9 +16,12 @@ import axios from 'axios';
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { ListItem } from "@mui/material";
+import { ListItem, Snackbar } from "@mui/material";
 
 import StudentRow from "../components/StudentRow"
+import Notification from "../components/notification";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import App from "../App";
 
 function allStudents(props){
   let OverOne = false;
@@ -47,7 +50,7 @@ function RowTeam(props) {
     email(row.students,props.comp,row.name)
   }
   const [open, setOpen] = React.useState(false);
-  let isWinner = row.isWinner;
+  let winner = row.winner;
   return (
 
     <React.Fragment>
@@ -65,7 +68,7 @@ function RowTeam(props) {
           {row.name}
         </TableCell>
         {
-          isWinner ? (<div><TableCell onClick={onWinnerClick}>Winner</TableCell></div>) : (<></>) // maybe replace  this with icon
+          winner ? (<div><TableCell onClick={onWinnerClick}>Winner</TableCell></div>) : (<></>) // maybe replace  this with icon
         }
       </TableRow>
       <TableRow>
@@ -123,7 +126,7 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.name}
         </TableCell>
-        <TableCell align="right">{row.link}</TableCell>
+        <TableCell align="right"><a href ={row.link}>{row.link}</a></TableCell>
         <TableCell align="right">{row.date}</TableCell>
       </TableRow>
       <TableRow>
@@ -173,7 +176,7 @@ Row.propTypes = {
     teams: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
-        isWinner: PropTypes.bool,
+        winner: PropTypes.bool,
         students: PropTypes.arrayOf(
           PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -188,7 +191,7 @@ Row.propTypes = {
 RowTeam.propTypes = {
   row: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    isWinner: PropTypes.bool,
+    winner: PropTypes.bool,
     students: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
@@ -204,17 +207,45 @@ export default function ViewCompetitions() {
   const getData = () => {  
     const result = axios.get("http://localhost:8080/competitions/").then(response => {
     setTop(fixDate(response.data));
-  }).catch(error => this.setState({error,isLoading: false}));
+  }).catch(error => setTop([]));
   
-}
+  }
 const fixDate = (data) => {
   data.map((comp1) => {
     comp1.date = comp1.date.substring(0,10);
   })
   return data;
 }
-React.useEffect(getData,[]);
+
+const getNoWinners = (comps) => {
+  let none = []  
+  const isDateBeforeToday = (date)  => {
+    return new Date(date.toDateString()) < new Date(new Date().toDateString());
+  }
+
+  comps.map(comp => {
+      if(isDateBeforeToday){
+        let hasWinner = false;
+
+        comp.teams.map(team => {
+          if(team.winner)
+            hasWinner = true;
+        })
+
+        if(!hasWinner)
+            none.push(comp);
+      }
+    })
+    return none;
+}
+React.useEffect(()=>{
+  getData();
+  return () => {
+    setTop([]);
+  };
+},[]);
   return (
+    <div>
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
@@ -232,5 +263,7 @@ React.useEffect(getData,[]);
         </TableBody>
       </Table>
     </TableContainer>
+
+      </div>
   );
 }

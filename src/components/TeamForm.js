@@ -2,7 +2,7 @@ import { Button, Checkbox, Container, TextField } from "@mui/material";
 import { useState } from "react";
 import StudentForm from "./StudentForm";
 
-let counter = 0;
+let counter = 1;
 function TeamForm(props){
     let op = [];
     props.data.forEach((element) => {
@@ -12,12 +12,18 @@ function TeamForm(props){
     });
     const [teams, setTeams] = useState(op);
     const handleChangeInput = (key, event) => {
+      console.log(key)
         const newInputFields = teams.map(i => {
-          if(key === i[0].key) {
-            if(event.target.name === "teamisWinner")
-                i[event.target.name] = event.target.checked
-                else
-            i[event.target.name] = event.target.value
+          if(key === i.key) {
+            if(event.target.name === "teamwinner")
+            {
+              i[event.target.name] = event.target.checked
+
+            }
+            else
+            {
+              i[event.target.name] = event.target.value
+            }
           }
           return i;
         })
@@ -40,18 +46,18 @@ function TeamForm(props){
     return (
         <Container>
           { teams.map((inputField,i) => (
-            <div key={inputField[0].key}>
+            <div key={inputField.key}>
               <TextField required
                 label="Team Name"
                 variant="filled"
                 name="teamname"
-                value={inputField[0].teamname}
-                onChange={event => handleChangeInput(inputField[0].key, event)}
+                value={inputField.teamname}
+                onChange={(event) => handleChangeInput(inputField.key, event)}
               />
                               <Checkbox
-                              checked={inputField[0].teamisWinner}
-                              onChange={event => handleChangeInput(inputField[0].teamname)}
-                              name = "teamisWinner"
+                              checked={inputField.teamisWinner}
+                              onChange={event => handleChangeInput(inputField.key,event)}
+                              name = "teamwinner"
                               inputProps={{ 'aria-label': 'controlled' }}
                                />
 

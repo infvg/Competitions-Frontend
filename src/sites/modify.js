@@ -1,18 +1,21 @@
-import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box, Button, CssBaseline, Divider, Drawer, FormControl, Grid, InputLabel, List, ListItem, ListItemText, MenuItem, Select, Toolbar } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import CompForm from "../components/CompForm";
 import Header from "./headerBar";
+
+const drawerWidth = 240;
 
 function Modify() {
 
 
     const [data, setData] = useState([]);
     const [competition, setCompetition] = useState('');
+    const [form, setForm] = useState()
     const getData = () => {  
         const result = axios.get("http://localhost:8080/competitions/").then(response => {
         setData(fixDate(response.data));
-      }).catch(error => this.setState({error,isLoading: false}));
+      }).catch(error => setData([]));
       
       }
     const fixDate = (data) => {
@@ -23,19 +26,29 @@ function Modify() {
     }
   const getCompFromName = (name) => {
     let returner = {}
-    data.forEach(comp => {
+    data.map(comp =>  {
       if(comp.name === name) {  
           returner = comp;
       }
     })
     return returner;
 }
+
   const handleChange = (event) => {
-    setCompetition(getCompFromName(event.target.value).name);
+      let text = event.target.innerText;
+    if(text !== ''){
+    setCompetition(text);
+    }
   };
-  React.useEffect(getData,[]);
+  React.useEffect(()=>{
+    getData();
+    return () => {
+      setData([]);
+    };
+  },[]);
 
     const handleSubmit = (e) => {
+
         e.preventDefault();
        const data = new FormData(e.target);
   
@@ -50,14 +63,14 @@ function Modify() {
             comp["teams"].push(team);
             team = {students: []}
           }
-            if(i === "teamisWinner"){
+            if(i === "teamwinner"){
               team[i.split("team")[1]] = true;
             }else{
             team[i.split("team")[1]] = d;
             }
         }else  if(i.startsWith("student")){
-          if(team["isWinner"]===undefined)
-            team["isWinner"] = false;
+          if(team["winner"]===undefined)
+            team["winner"] = false;
   
           if(student["major"] !== undefined){
             team["students"].push(student);
@@ -79,49 +92,60 @@ function Modify() {
       window.location.href = "/";
     };
     const menuItems = data.map(item => (
-        <MenuItem key={item.id} value={item.name}>{item.name}</MenuItem>
+        <ListItem button key={item.name} value={item.name}><ListItemText primary={item.name} onClick={handleChange} /></ListItem>
       ));
     return (
         <div id = 'modify'>
                     <Header />
                     <div>
-                        <Box sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }}noValidateautoComplete="off" onSubmit={handleSubmit}> 
-      <div>
-      <Grid container spacing={5}>
-      <Grid item xs={3}>
-    <FormControl fullWidth>
-    <InputLabel id="select-label">Competition</InputLabel>
-      <Select 
-          labelId="select-label"
-          id="select"
-          value={competition}
-          label="selector"
-          onChange={handleChange}
-        >
-            {menuItems}
-        </Select>
-        </FormControl>
-        </Grid>
-          <Grid item xs={7}>
-        {(competition!=='') ? (<CompForm data={getCompFromName(competition)}/>): (<p>Select a competition</p>)}
+                    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <Drawer
+        sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Toolbar />
+        <Divider />
+        <List>
+          {menuItems}
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+      >
+        {competition !== '' ? (
+            <div>
+                        <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }}noValidateautoComplete="off" onSubmit={handleSubmit}> 
+                        <div>
+                        <Grid container spacing={5}>
+                        <Grid item xs={7}>
+                        <CompForm data={getCompFromName(competition)} />
+               
         </Grid>
           <Grid item xs={2}>
-          {(competition!=='') ? (<div>
-              
-        <Button type="submit"> Submit</Button>
-        <Button type="delete"> Delete</Button>
-          </div>) : (<div>
-              
-        <Button type="submit" disabled> Submit</Button>
-        <Button type="delete" disabled> Delete</Button>
-          </div>)}
-        </Grid>
-        </Grid>
-        </div>
-        </Box>
-                    </div>
+        <Button type="submit" name="save"> Save</Button>
+        <Button type="submit" name="delete"> Delete</Button>
+            </Grid>
+            </Grid>
+            </div>
+            </Box>
+            </div>
+        )
+        : (<p>Select a competition</p>)
+        }
+      </Box>
+    </Box>
+         </div>
          </div>
     );
 
 }
+
+
 export default Modify

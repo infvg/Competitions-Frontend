@@ -48,11 +48,13 @@ function CompForm(props) {
   function getFromCompetition(props) {
     if (props === undefined)
         return <TeamForm data={[[{}, <StudentForm data={[{ studentname: "", studentmajor: "", studentstId: "" },]} />]]} />;
-  
+    
+
     let comp = []
     props.teams.forEach(team => {
         let students = [];
-  
+        console.log(team.name)
+
         team.students.forEach(student => {
             students.push({ studentname: student.name, studentmajor: student.major, studentstId: student.stId })
         })
@@ -61,5 +63,7 @@ function CompForm(props) {
   
     return <TeamForm data={comp} />
   }
+
+
 
   export default CompForm;
