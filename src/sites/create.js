@@ -1,3 +1,4 @@
+import { CheckBox } from '@mui/icons-material';
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField } from '@mui/material';
 import axios from 'axios';
 import { useRef, useState } from 'react';
@@ -12,21 +13,21 @@ function CompForm(props) {
       <Container>
           <div key="dopqjkwpd">
               <TextField required
-                  name="name"
+                  name="compName"
                   label="Competition Name"
                   variant="filled"
                   defaultValue={props.data === undefined ? "" : props.data.name}
 
               />
               <TextField required
-                  name="link"
+                  name="compLink"
                   label="Competition Link"
                   variant="filled"
                   defaultValue={props.data === undefined ? "" : props.data.link}
 
               />
               <TextField required
-                  name="date"
+                  name="compDate"
                   label="Competition Date"
                   variant="filled"
                   defaultValue={props.data === undefined ? "" : props.data.date}
@@ -52,7 +53,7 @@ function getFromCompetition(props) {
       team.students.forEach(student => {
           students.push({ name: student.name, major: student.major, stId: student.stId })
       })
-      comp.push([{ name: team.name, winner: team.iswinner }, <StudentForm data={students} />])
+      comp.push([{ name: team.name, winner: team.winner }, <StudentForm data={students} />])
   })
 
   return <TeamForm data={comp} />
@@ -97,11 +98,11 @@ function TeamForm(props){
               <TextField required
                 label="Team Name"
                 variant="filled"
-                name="name"
+                name="teamName"
                 value={inputField[0].name}
                 onChange={event => handleChangeInput(inputField[0].key, event)}
               />
-              <FormControlLabel control={<Checkbox/>} value={inputField[0].iswinner}label="Winner" />
+              <FormControlLabel control={inputField[0].winner === true ? (<CheckBox defaultChecked name = "winner" onChange  = {handleChangeInput}/>) : (<CheckBox name = "winner" onChange  = {handleChangeInput}/>)} label = "Winner"/>
               <Button disabled={teams.length === 1} onClick={() => handleRemoveFields(inputField.key)}>
                 Remove
               </Button>
@@ -159,7 +160,7 @@ function StudentForm(props) {
             <div name={inputField.key}>
               <TextField required
                 label="Student ID"
-                name="stId"
+                name="studentId"
                 variant="outlined"
                 type="number"
                 value={inputField.stId}
@@ -167,14 +168,14 @@ function StudentForm(props) {
               />
               <TextField required
                 label="Name"
-                name="name"
+                name="studentName"
                 variant="outlined"
                 value={inputField.name}
                 onChange={event => handleChangeInput(inputField.key, event)}
               />
                 <TextField required
                 label="Major"
-                name="major"
+                name="studentMajor"
                 variant="outlined"
                 value={inputField.major}
                 onChange={event => handleChangeInput(inputField.key, event)}
@@ -195,7 +196,10 @@ function Create(){
 
   const handleSubmit = (e) => {
       e.preventDefault();
-      console.log(e.target.elements.name.value)
+     const data = new FormData(e.target);
+     data.forEach((d,i) => {
+      console.log(i)
+     })
   };
   
     return(
