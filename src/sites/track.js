@@ -160,7 +160,6 @@ function Track() {
     if(competition !== ''){
         console.log(swapday(getCompFromName(competition).date))
       setForm(<div>
-          <DateCountdown dateTo="January 01, 2023 00:00:00 GMT+03:00" mostSignificantFigure="year" />
           <Row key={competition} row={getCompFromName(competition)} /></div>)
     }
   },[competition]);
@@ -183,6 +182,7 @@ function Track() {
         variant="permanent"
         anchor="left"
       >
+          <p><a href="./">Home</a></p>
         <Toolbar />
         <Divider />
         <List>
