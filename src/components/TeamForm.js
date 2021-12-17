@@ -12,18 +12,12 @@ function TeamForm(props){
     });
     const [teams, setTeams] = useState(op);
     const handleChangeInput = (key, event) => {
-      console.log(key)
         const newInputFields = teams.map(i => {
-          if(key === i.key) {
-            if(event.target.name === "teamwinner")
-            {
-              i[event.target.name] = event.target.checked
-
-            }
-            else
-            {
-              i[event.target.name] = event.target.value
-            }
+          if(key === i[0].key) {
+            if(event.target.name === "teamisWinner")
+                i[event.target.name] = event.target.checked
+                else
+            i[event.target.name] = event.target.value
           }
           return i;
         })
@@ -51,13 +45,13 @@ function TeamForm(props){
                 label="Team Name"
                 variant="filled"
                 name="teamname"
-                value={inputField.teamname}
-                onChange={(event) => handleChangeInput(inputField.key, event)}
+                value={inputField[0].teamname}
+                onChange={event => handleChangeInput(inputField[0].key, event)}
               />
                               <Checkbox
-                              checked={inputField.teamisWinner}
-                              onChange={event => handleChangeInput(inputField.key,event)}
-                              name = "teamwinner"
+                              checked={inputField[0].teamisWinner}
+                              onChange={event => handleChangeInput(inputField[0].teamname)}
+                              name = "teamisWinner"
                               inputProps={{ 'aria-label': 'controlled' }}
                                />
 
