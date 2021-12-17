@@ -8,8 +8,9 @@ const drawerWidth = 240;
 
 function Modify() {
 
-
+  
     const [data, setData] = useState([]);
+    const [delBut, setDelete] = useState(false);
     const [competition, setCompetition] = useState('');
     const [form, setForm] = useState()
     const getData = () => {  
@@ -47,7 +48,14 @@ function Modify() {
     };
   },[]);
 
+  const setDelT = () => {
+    setDelete(true)
 
+  }
+  const setDelF = () => {
+    setDelete(false)
+
+  }
   React.useEffect(()=>{
     if(competition !== '')
       setForm(<CompForm data={getCompFromName(competition)} />)
@@ -92,13 +100,22 @@ function Modify() {
      
      }
     })
-
+    if(!delBut){
      axios.post("http://localhost:8080/competitions/",comp).then(function (response) {
      console.log(response);
    })
    .catch(function (error) {
      console.log(error);
    });
+  }else{
+    axios.post("http://localhost:8080/competitions/delete",comp).then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+  window.location.href = "/";
   };
     const menuItems = data.map(item => (
         <ListItem button key={item.name} value={item.name}><ListItemText primary={item.name} onClick={handleChange} /></ListItem>
@@ -138,8 +155,8 @@ function Modify() {
                
         </Grid>
           <Grid item xs={2}>
-        <Button type="submit" name="save"> Save</Button>
-        <Button type="submit" name="delete"> Delete</Button>
+        <Button type="submit" name="save" onClick={setDelF}> Save</Button>
+        <Button type="submit" name="delete" onClick={setDelT}> Delete</Button>
             </Grid>
             </Grid>
             </div>

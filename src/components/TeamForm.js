@@ -7,7 +7,6 @@ function TeamForm(props){
     let op = [];
     props.data.forEach((element) => {
         element[0].key = ++counter;
-        console.log(element)
         op.push(element);
 
     });
@@ -29,12 +28,13 @@ function TeamForm(props){
     const handleAddFields = () => {
         setTeams([...teams, [{key:++counter},<StudentForm data={[{studentname: "", studentmajor: "", studentstId: ""},]} />]])
         
-      console.log(teams)
       }
     
       const handleRemoveFields = key => {
         const values  = [...teams];
-        values.splice(values.findIndex(value => value.key === key), 1);
+        values.splice(values.findIndex(value => {
+          console.log(value[0])
+          return value[0].key === key}), 1);
         setTeams(values);
       }
       
@@ -56,7 +56,7 @@ function TeamForm(props){
                               inputProps={{ 'aria-label': 'controlled' }}
                                />
 
-               <Button disabled={teams.length === 1} onClick={() => handleRemoveFields(inputField.key)}>
+               <Button disabled={teams.length === 1} onClick={() => handleRemoveFields(inputField[0].key)}>
                 Remove
               </Button>
               {teams.length - 1 === i && (<Button onClick={handleAddFields}>

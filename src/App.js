@@ -6,6 +6,7 @@ import {Routes,
   Route} from 'react-router-dom'
 import Modify from './sites/modify';
 import { SnackbarProvider } from 'notistack';
+import Track from './sites/track';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
 
       <Routes>
       <Route path="/" element={<Home/>} />
+      <Route path="/track" element={<Track/>} />
       <Route path="/create" element={<Create/>} />
       <Route path="/modify" element={<Modify/>} />
       </Routes>

@@ -9,7 +9,7 @@ function CompForm(props) {
     return (
   
         <Container>
-            <div key="dopqjkwpd">
+            <div key={props.data === undefined ? "QDWIJQWOID" : props.data.id}>
                 <TextField required
                     name="compname"
                     label="Competition Name"
@@ -34,7 +34,7 @@ function CompForm(props) {
                 <TextField
                     name="compid"
                     type="hidden"
-                    defaultValue={props.data === undefined ? uuidv4() : props.data.id}
+                    defaultValue={props.data === undefined ? uuidv4().substring(0,30) : props.data.id}
   
                 />
                 {getFromCompetition(props.data)}
