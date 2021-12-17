@@ -23,10 +23,9 @@ function Timer(props){
       const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
       const [year] = useState(new Date().getFullYear());
 
-      React.useEffect(() => {
+      useEffect(() => {          
         setTimeLeft(calculateTimeLeft());
-      });
-      useEffect(() => {
+
         setTimeout(() => {
           setTimeLeft(calculateTimeLeft());
         }, 1000);

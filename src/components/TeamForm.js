@@ -1,16 +1,11 @@
 import { Button, Checkbox, Container, TextField } from "@mui/material";
-import { useState } from "react";
+import { keys } from "@mui/system";
+import React, { useState } from "react";
 import StudentForm from "./StudentForm";
+import { v4 as uuidv4 } from 'uuid';
 
-let counter = 1;
 function TeamForm(props){
-    let op = [];
-    props.data.forEach((element) => {
-        element[0].key = ++counter;
-        op.push(element);
-
-    });
-    const [teams, setTeams] = useState(op);
+    const [teams, setTeams] = useState([...props.data]);
     const handleChangeInput = (key, event) => {
         const newInputFields = teams.map(i => {
           if(key === i[0].key) {
@@ -26,18 +21,15 @@ function TeamForm(props){
       }
     
     const handleAddFields = () => {
-        setTeams([...teams, [{key:++counter},<StudentForm data={[{studentname: "", studentmajor: "", studentstId: ""},]} />]])
+        const qwe= uuidv4()
+        setTeams([...teams, [{key:qwe},<StudentForm data={[{studentname: "", studentmajor: "", studentstId: ""},]}/>]])
         
       }
     
       const handleRemoveFields = key => {
-        const values  = [...teams];
-        values.splice(values.findIndex(value => {
-          console.log(value[0])
-          return value[0].key === key}), 1);
-        setTeams(values);
-      }
-      
+        setTeams(teams.filter((item) => item[0].key !== key));
+    }
+
     return (
         <Container>
           { teams.map((inputField,i) => (
@@ -45,12 +37,12 @@ function TeamForm(props){
               <TextField required
                 label="Team Name"
                 variant="filled"
+                defaultValue={inputField[0].teamname}
                 name="teamname"
-                value={inputField[0].teamname}
                 onChange={event => handleChangeInput(inputField[0].key, event)}
               />
                               <Checkbox
-                              checked={inputField[0].teamwinner}
+                              defaultChecked={inputField[0].teamwinner}
                               onChange={event => handleChangeInput(inputField[0].teamname)}
                               name = "teamwinner"
                               inputProps={{ 'aria-label': 'controlled' }}

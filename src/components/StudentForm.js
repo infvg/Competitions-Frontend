@@ -1,15 +1,12 @@
 import { Button, Container, TextField } from '@mui/material';
 import { useState } from 'react';
-
-
-let counter = 0;
-
+import { v4 as uuidv4 } from 'uuid';
 
 function StudentForm(props) {
     
     let op = [];
     props.data.forEach((element) => {
-        element.key = ++counter;
+        element.key = uuidv4();
         op.push(element);
 
     });
@@ -28,7 +25,7 @@ function StudentForm(props) {
       }
     
     const handleAddFields = () => {
-        setStudents([...students, { key:++counter,  studentname: '', studentmajor: '', studentstId:null}])
+        setStudents([...students, { key:uuidv4(),  studentname: '', studentmajor: '', studentstId:null}])
       }
     
       const handleRemoveFields = key => {
@@ -44,7 +41,7 @@ function StudentForm(props) {
               <TextField required
                 label="Student ID"
                 name="studentstId"
-                variant="outlined"
+                variant="filled"
                 type="number"
                 value={inputField.studentstId}
                 onChange={event => handleChangeInput(inputField.key, event)}
@@ -52,14 +49,14 @@ function StudentForm(props) {
               <TextField required
                 label="Name"
                 name="studentname"
-                variant="outlined"
+                variant="filled"
                 value={inputField.studentname}
                 onChange={event => handleChangeInput(inputField.key, event)}
               />
                 <TextField required
                 label="Major"
                 name="studentmajor"
-                variant="outlined"
+                variant="filled"
                 value={inputField.studentmajor}
                 onChange={event => handleChangeInput(inputField.key, event)}
               />
