@@ -7,6 +7,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import EmailIcon from '@mui/icons-material/Email';
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { sendEmail } from "../services/EmailsService" 
@@ -37,7 +38,7 @@ function TeamRow(props) {
             {row.name}
           </TableCell>
           {
-            winner ? (<div><TableCell onClick={onWinnerClick}>Winner</TableCell></div>) : (<></>) // maybe replace  this with icon
+            !winner ? (<div><TableCell onClick={onWinnerClick}>Winner <EmailIcon /></TableCell></div>) : (<></>) // maybe replace  this with icon
           }
         </TableRow>
         <TableRow>

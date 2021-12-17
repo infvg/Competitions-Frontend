@@ -11,17 +11,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button"
 import axios from 'axios';
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { ListItem, Snackbar } from "@mui/material";
 
 import StudentRow from "../components/StudentRow"
-import Notification from "../components/notification";
-import { SnackbarProvider, useSnackbar } from "notistack";
 import TeamRow from "../components/TeamRow";
+import { useSnackbar } from "notistack";
 
 function allStudents(props){
   let OverOne = false;
