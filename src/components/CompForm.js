@@ -58,7 +58,7 @@ function CompForm(props) {
         team.students.forEach(student => {
             students.push({ studentname: student.name, studentmajor: student.major, studentstId: student.stId })
         })
-        comp.push([{ teamname: team.name, teamisWinner: team.isWinner }, <StudentForm data={students} />])
+        comp.push([{ teamname: team.name, teamwinner: team.winner }, <StudentForm data={students} />])
     })
   
     return <TeamForm data={comp} />

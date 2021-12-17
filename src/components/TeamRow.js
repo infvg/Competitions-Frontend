@@ -38,7 +38,7 @@ function TeamRow(props) {
             {row.name}
           </TableCell>
           {
-            !winner ? (<div><TableCell onClick={onWinnerClick}>Winner <EmailIcon /></TableCell></div>) : (<></>) // maybe replace  this with icon
+            winner ? (<div><TableCell onClick={onWinnerClick}>Winner <EmailIcon /></TableCell></div>) : (<></>) // maybe replace  this with icon
           }
         </TableRow>
         <TableRow>

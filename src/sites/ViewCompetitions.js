@@ -151,15 +151,20 @@ const getNoWinners = (comps) => {
 }
 React.useEffect(()=>{
   getData();
-
-  getNoWinners(top).forEach(comp => {
-    enqueueSnackbar(comp.name + " has ended! Modify the competition and add some winners.", {variant: "info"});
-  })
   return () => {
     setTop([]);
   };
 
 },[]);
+const notifications = () => {
+  getNoWinners(top).forEach(comp => {
+    enqueueSnackbar(comp.name + " has ended! Modify the competition and add some winners.", {variant: "info"});
+  })
+}
+
+React.useEffect(() => {
+  notifications()
+})
   return (
     <div>
     <TableContainer component={Paper}>

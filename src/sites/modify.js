@@ -47,53 +47,59 @@ function Modify() {
     };
   },[]);
 
-    const handleSubmit = (e) => {
 
-        e.preventDefault();
-       const data = new FormData(e.target);
-  
-       let comp = {teams : []};
-       let team = {students: []}
-       let student = {}
-       data.forEach((d,i) => {
-        if(i.startsWith("comp")){
-          comp[i.split("comp")[1]] = d;
-        }else if(i.startsWith("team")){
-          if(team["students"].length > 0){
-            comp["teams"].push(team);
-            team = {students: []}
-          }
-            if(i === "teamwinner"){
-              team[i.split("team")[1]] = true;
-            }else{
-            team[i.split("team")[1]] = d;
-            }
-        }else  if(i.startsWith("student")){
-          if(team["winner"]===undefined)
-            team["winner"] = false;
-  
-          if(student["major"] !== undefined){
-            team["students"].push(student);
-            student = {}
-          }
-            student[i.split("student")[1]] = d;
-        
+  React.useEffect(()=>{
+    if(competition !== '')
+      setForm(<CompForm data={getCompFromName(competition)} />)
+  },[competition]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+
+    let comp = {teams : []};
+    let curteam = 0;
+    let curstudent = 0;
+    data.forEach((d,i) => {
+     if(i.startsWith("comp")){
+       comp[i.split("comp")[1]] = d;
+     }else if(i.startsWith("team")){
+       if(i === "teamname" &&  comp.teams[curteam] !== undefined){
+        curteam++;
+       }
+         if(i === "teamwinner"){
+           comp.teams[curteam][i.split("team")[1]] = true;
+           curstudent = 0;
+         }else{
+          comp.teams.push({students:[]});
+          comp.teams[curteam][i.split("team")[1]] = d;
+         }
+     }else  if(i.startsWith("student")){
+       
+       if(comp.teams[curteam]["winner"]===undefined){
+         
+          comp.teams[curteam]["winner"] = false;
+          curstudent = 0;
         }
-       })
-       team["students"].push(student)
-       comp["teams"].push(team)
-
-        axios.post("http://localhost:8080/competitions/",JSON.stringify(comp)).then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  
-      window.location.href = "/";
-      
+        if(i.startsWith("studentstId")){
+          comp.teams[curteam]["students"].push({});
+        }
+        comp.teams[curteam]["students"][curstudent][i.split("student")[1]] = d;
+       if(i === "studentmajor"){
+         curstudent++;
+       }
+         
      
-    };
+     }
+    })
+
+     axios.post("http://localhost:8080/competitions/",comp).then(function (response) {
+     console.log(response);
+   })
+   .catch(function (error) {
+     console.log(error);
+   });
+  };
     const menuItems = data.map(item => (
         <ListItem button key={item.name} value={item.name}><ListItemText primary={item.name} onClick={handleChange} /></ListItem>
       ));
@@ -128,7 +134,7 @@ function Modify() {
                         <div>
                         <Grid container spacing={5}>
                         <Grid item xs={7}>
-                        <CompForm data={getCompFromName(competition)} />
+                        {form}
                
         </Grid>
           <Grid item xs={2}>

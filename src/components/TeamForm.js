@@ -7,6 +7,7 @@ function TeamForm(props){
     let op = [];
     props.data.forEach((element) => {
         element[0].key = ++counter;
+        console.log(element)
         op.push(element);
 
     });
@@ -14,7 +15,7 @@ function TeamForm(props){
     const handleChangeInput = (key, event) => {
         const newInputFields = teams.map(i => {
           if(key === i[0].key) {
-            if(event.target.name === "teamisWinner")
+            if(event.target.name === "teamwinner")
                 i[event.target.name] = event.target.checked
                 else
             i[event.target.name] = event.target.value
@@ -49,9 +50,9 @@ function TeamForm(props){
                 onChange={event => handleChangeInput(inputField[0].key, event)}
               />
                               <Checkbox
-                              checked={inputField[0].teamisWinner}
+                              checked={inputField[0].teamwinner}
                               onChange={event => handleChangeInput(inputField[0].teamname)}
-                              name = "teamisWinner"
+                              name = "teamwinner"
                               inputProps={{ 'aria-label': 'controlled' }}
                                />
 
