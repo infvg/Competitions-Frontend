@@ -1,4 +1,4 @@
-import { Box, Button, CssBaseline, Divider, Drawer, FormControl, Grid, InputLabel, List, ListItem, ListItemText, MenuItem, Select, Toolbar } from "@mui/material";
+import { Box, Button, CssBaseline, Divider, Drawer, Grid, List, ListItem, ListItemText,  Toolbar } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import CompForm from "../components/CompForm";
@@ -135,6 +135,7 @@ function Modify() {
         variant="permanent"
         anchor="left"
       >
+      <p><a href="./">Home</a></p>
         <Toolbar />
         <Divider />
         <List>
